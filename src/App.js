@@ -6,10 +6,12 @@ import './App.css';
 // keep track of row, column, text (list/array) -> onBlur
 // keep track of state here useState
 
-// Done in approx. 3 hours? (without using onBlur though; may need to rethink the state management to implement)
+// dimensions of the spreadsheet
+const DIMENSIONS = 5;
+
 function App() {
 
-  const [table, setTable] = useState(Array(5).fill(Array(5).fill('')));
+  const [table, setTable] = useState(Array(DIMENSIONS).fill(Array(DIMENSIONS).fill('')));
 
   // contains all the changes (including current state) that the user has done (most recent is last element)
   const [undo, setUndone] = useState([]);
@@ -74,7 +76,7 @@ function App() {
   }
 
   const updateCell = (cellCol, cellRow, value) => {
-
+    // TODO: make this better (ie. don't require copying of entire table)
     const updated = table.map((row, rowIndex) => {
       if(rowIndex === cellRow) {
         return row.map((col, colIndex) => {
@@ -90,11 +92,16 @@ function App() {
 
   return (
     <div className="App">
-      <Row rowNum={0} table={table} onUpdate={handleTableChange} /> 
-      <Row rowNum={1} table={table} onUpdate={handleTableChange} />
-      <Row rowNum={2} table={table} onUpdate={handleTableChange} />
-      <Row rowNum={3} table={table} onUpdate={handleTableChange} />
-      <Row rowNum={4} table={table} onUpdate={handleTableChange} />
+      <p>Undo/Redo Spreadsheet</p>
+      <table>
+        <tbody>
+          {
+            table.map((_, index) => 
+              <Row key={index} rowNum={index} table={table} onUpdate={handleTableChange} />
+            )
+          } 
+        </tbody>
+      </table>
       <div>
         <button onClick={handleUndo} disabled={undo.length === 0}>Undo</button>
         <button onClick={handleRedo} disabled={redo.length === 0}>Redo</button>

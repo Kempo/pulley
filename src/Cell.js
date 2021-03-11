@@ -23,6 +23,8 @@ export default function Cell({table, colNum, rowNum, onUpdate }) {
   */
 
   return (
-      <input value={table[rowNum][colNum]} onChange={handleBlur} ></input> 
+      <td>
+        <input value={table[rowNum][colNum]} onChange={handleBlur}></input> 
+      </td>
     )
 }
